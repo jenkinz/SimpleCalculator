@@ -7,12 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "CalculatorBrain.h"
 
 @interface ViewController ()
 
 @property (nonatomic) BOOL userCurrentlyEnteringDigit;
 
-@property (nonatomic, strong) NSMutableArray *digitStack;
+@property (nonatomic, strong) CalculatorBrain *calculatorBrain;
 
 @end
 
@@ -20,7 +21,7 @@
 
 @synthesize display = _display;
 @synthesize userCurrentlyEnteringDigit = _userCurrentlyEnteringDigit;
-@synthesize digitStack = _digitStack;
+@synthesize calculatorBrain = _calculatorBrain;
 
 - (void)viewDidLoad
 {
@@ -40,12 +41,12 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (NSMutableArray *)digitStack
+- (CalculatorBrain *)calculatorBrain
 {
-    if (_digitStack == nil) {
-        _digitStack = [[NSMutableArray alloc] init];
+    if (_calculatorBrain == nil) {
+        _calculatorBrain = [[CalculatorBrain alloc] init];
     }
-    return _digitStack;
+    return _calculatorBrain;
 }
 
 - (IBAction)digitPressed:(UIButton *)sender
@@ -63,18 +64,24 @@
 
 - (IBAction)operationPressed:(UIButton *)sender
 {
-
+    if (self.userCurrentlyEnteringDigit) { 
+        [self enterPressed]; 
+    }
+    double result = [self.calculatorBrain performOperation:sender.currentTitle];
+    self.display.text = [NSString stringWithFormat:@"%g", result];
+    [self enterPressed]; // push the result onto the stack so it can be used successively
 }
 
 - (IBAction)enterPressed
 {
-    [self.digitStack addObject:self.display.text];
+    [self.calculatorBrain pushOperand:[self.display.text doubleValue]];
     self.userCurrentlyEnteringDigit = NO;
 }
 
 - (IBAction)clearPressed
 {
-    NSLog(@"Clear pressed");
+    self.display.text = @"0";
+    [self.calculatorBrain reset];
     self.userCurrentlyEnteringDigit = NO;
 }
 @end
