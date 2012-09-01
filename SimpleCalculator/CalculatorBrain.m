@@ -10,39 +10,40 @@
 
 @interface CalculatorBrain ()
 
-@property (nonatomic, strong) NSMutableArray *operandStack;
+@property (nonatomic, strong) NSMutableArray *operandQueue;
 
 @end
 
 @implementation CalculatorBrain
 
-@synthesize operandStack = _operandStack;
+@synthesize operandQueue = _operandQueue;
 
-- (NSMutableArray *)operandStack
+- (NSMutableArray *)operandQueue
 {
-    if (_operandStack == nil) {
-        _operandStack = [[NSMutableArray alloc] init];
+    if (_operandQueue == nil) {
+        _operandQueue = [[NSMutableArray alloc] init];
     }
-    return _operandStack;
+    return _operandQueue;
 }
 
 - (void)pushOperand:(double)operand
 {
-    [self.operandStack addObject:[NSNumber numberWithDouble:operand]];
+    [self.operandQueue addObject:[NSNumber numberWithDouble:operand]];
 }
 
 - (double)popOperand
 {
-    NSNumber *popped = [self.operandStack lastObject];
-    if (self.operandStack) {
-        [self.operandStack removeLastObject];
+    if (self.operandQueue) {
+        NSNumber *popped = [self.operandQueue objectAtIndex:0];
+        [self.operandQueue removeObjectAtIndex:0];
+        return [popped doubleValue];
     }
-    return [popped doubleValue];
+    return 0;
 }
 
 - (double)performOperation:(NSString *)operation
 {
-    if ([self.operandStack count] == 0) {
+    if ([self.operandQueue count] == 0) {
         return 0;
     }
     
@@ -62,7 +63,7 @@
         isOpSubtraction = YES;
     }
     
-    while ([self.operandStack count] > 0) {
+    while ([self.operandQueue count] > 0) {
         if (isOpMultiplication) {
             result *= [self popOperand];
         }
@@ -82,7 +83,7 @@
 
 - (void)reset
 {
-    [self.operandStack removeAllObjects];
+    [self.operandQueue removeAllObjects];
 }
 
 @end
