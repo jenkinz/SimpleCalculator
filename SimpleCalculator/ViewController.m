@@ -69,7 +69,6 @@
     }
     double result = [self.calculatorBrain performOperation:sender.currentTitle];
     self.display.text = [NSString stringWithFormat:@"%g", result];
-    [self enterPressed]; // push the result onto the stack so it can be used successively
 }
 
 - (IBAction)enterPressed

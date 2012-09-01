@@ -78,6 +78,8 @@
         }
     }
     
+    [self pushOperand:result]; // push result onto queue so it can be used successively
+    
     return result;
 }
 
