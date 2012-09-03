@@ -101,6 +101,7 @@
 {
     NSMutableArray *stack;
     
+    
     if ([program isKindOfClass:[NSArray class]]) {
         stack = [program mutableCopy];
     }
