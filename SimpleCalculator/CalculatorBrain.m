@@ -54,7 +54,14 @@
 
 + (NSString *)descriptionOfProgram:(id)program
 {
-    return @"TODO";
+    if ([program isKindOfClass:[NSArray class]]) {
+        NSString *description = @"";
+        for (id sym in program) {
+            description = [description stringByAppendingFormat:@"%@ ", sym];
+        }
+        return description;
+    }
+    return @"Invalid program";
 }
 
 + (double)popOperandOffStack:(NSMutableArray *)stack
