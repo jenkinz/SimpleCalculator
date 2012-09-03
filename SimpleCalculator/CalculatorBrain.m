@@ -10,32 +10,32 @@
 
 @interface CalculatorBrain ()
 
-@property (nonatomic, strong) NSMutableArray *operandQueue;
+@property (nonatomic, strong) NSMutableArray *operandStack;
 
 @end
 
 @implementation CalculatorBrain
 
-@synthesize operandQueue = _operandQueue;
+@synthesize operandStack = _operandStack;
 
-- (NSMutableArray *)operandQueue
+- (NSMutableArray *)operandStack
 {
-    if (_operandQueue == nil) {
-        _operandQueue = [[NSMutableArray alloc] init];
+    if (!_operandStack) {
+        _operandStack = [[NSMutableArray alloc] init];
     }
-    return _operandQueue;
+    return _operandStack;
 }
 
 - (void)pushOperand:(double)operand
 {
-    [self.operandQueue addObject:[NSNumber numberWithDouble:operand]];
+    [self.operandStack addObject:[NSNumber numberWithDouble:operand]];
 }
 
 - (double)popOperand
 {
-    if (self.operandQueue) {
-        NSNumber *popped = [self.operandQueue objectAtIndex:0];
-        [self.operandQueue removeObjectAtIndex:0];
+    if (self.operandStack) {
+        NSNumber *popped = [self.operandStack lastObject];
+        [self.operandStack removeLastObject];
         return [popped doubleValue];
     }
     return 0;
@@ -43,49 +43,36 @@
 
 - (double)performOperation:(NSString *)operation
 {
-    if ([self.operandQueue count] == 0) {
+    if (!self.operandStack || [self.operandStack count] == 0) {
         return 0;
     }
     
-    double result = [self popOperand];
-    BOOL isOpMultiplication = NO, isOpDivision = NO, isOpAddition = NO, isOpSubtraction = NO;
+    double result = 0;
     
     if ([operation isEqualToString:@"*"]) {
-        isOpMultiplication = YES;
+        result = [self popOperand] * [self popOperand];
     }
     else if ([operation isEqualToString:@"/"]) {
-        isOpDivision = YES;
+        double divisor = [self popOperand];
+        if (divisor) {
+            result = [self popOperand] / divisor;
+        }
     }
     else if ([operation isEqualToString:@"+"]) {
-        isOpAddition = YES;
+        result = [self popOperand] + [self popOperand];
     }
     else if ([operation isEqualToString:@"-"]) {
-        isOpSubtraction = YES;
-    }
-    
-    while ([self.operandQueue count] > 0) {
-        if (isOpMultiplication) {
-            result *= [self popOperand];
-        }
-        else if (isOpDivision) {
-            result /= [self popOperand];
-        }
-        else if (isOpAddition) {
-            result += [self popOperand];
-        }
-        else if (isOpSubtraction) {
-            result -= [self popOperand];
-        }
+        double subtrahend = [self popOperand];
+        result = [self popOperand] - subtrahend;
     }
     
     [self pushOperand:result]; // push result onto queue so it can be used successively
-    
     return result;
 }
 
 - (void)reset
 {
-    [self.operandQueue removeAllObjects];
+    [self.operandStack removeAllObjects];
 }
 
 @end

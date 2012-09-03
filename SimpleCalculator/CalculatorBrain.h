@@ -14,4 +14,9 @@
 - (double)performOperation:(NSString *)operation;
 - (void)reset;
 
+@property (readonly) id program;
+
++ (double)runProgram:(id)program;
++ (NSString *)description:(id)program;
+
 @end
