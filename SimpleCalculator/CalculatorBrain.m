@@ -100,7 +100,7 @@
 + (double)runProgram:(id)program
 {
     NSMutableArray *stack;
-    
+     
     
     if ([program isKindOfClass:[NSArray class]]) {
         stack = [program mutableCopy];
