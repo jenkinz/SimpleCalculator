@@ -32,11 +32,7 @@
 }
 
 - (double)performOperation:(NSString *)operation
-{
-    if (!self.programStack || [self.programStack count] == 0) {
-        return 0;
-    }
-    
+{    
     [self.programStack addObject:operation];
     
     return [CalculatorBrain runProgram:self.program];
