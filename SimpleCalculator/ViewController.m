@@ -12,7 +12,7 @@
 @interface ViewController ()
 
 @property (nonatomic) BOOL userCurrentlyEnteringDigit;
-
+@property (nonatomic) BOOL userHasEnteredDecimalPoint;
 @property (nonatomic, strong) CalculatorBrain *calculatorBrain;
 
 @end
@@ -21,6 +21,7 @@
 
 @synthesize display = _display;
 @synthesize userCurrentlyEnteringDigit = _userCurrentlyEnteringDigit;
+@synthesize userHasEnteredDecimalPoint = _userHasEnteredDecimalPoint;
 @synthesize calculatorBrain = _calculatorBrain;
 
 - (void)viewDidLoad
@@ -52,6 +53,15 @@
 - (IBAction)digitPressed:(UIButton *)sender
 {
     NSString *digit = [sender currentTitle];
+    BOOL isDecimalPoint = NO;
+    
+    if ([@"." isEqualToString:digit]) {
+        isDecimalPoint = YES;
+        if (self.userHasEnteredDecimalPoint) {
+            return; // don't allow more than one decimal point!
+        }
+        self.userHasEnteredDecimalPoint = YES;
+    }
     
     if (self.userCurrentlyEnteringDigit) {
         self.display.text = [self.display.text stringByAppendingString:digit];
@@ -59,12 +69,15 @@
     else {
         self.display.text = digit;
         self.userCurrentlyEnteringDigit = YES;
+        if (!isDecimalPoint) {
+            self.userHasEnteredDecimalPoint = NO;
+        }
     }
 }
 
 - (IBAction)operationPressed:(UIButton *)sender
 {
-    if (self.userCurrentlyEnteringDigit) { 
+    if (self.userCurrentlyEnteringDigit) {
         [self enterPressed]; 
     }
     double result = [self.calculatorBrain performOperation:sender.currentTitle];
@@ -75,6 +88,7 @@
 {
     [self.calculatorBrain pushOperand:[self.display.text doubleValue]];
     self.userCurrentlyEnteringDigit = NO;
+    self.userHasEnteredDecimalPoint = NO;
 }
 
 - (IBAction)clearPressed
@@ -82,5 +96,6 @@
     self.display.text = @"0";
     [self.calculatorBrain reset];
     self.userCurrentlyEnteringDigit = NO;
+    self.userHasEnteredDecimalPoint = NO;
 }
 @end
