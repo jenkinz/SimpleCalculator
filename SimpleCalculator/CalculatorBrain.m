@@ -33,7 +33,7 @@
 
 - (double)performOperation:(NSString *)operation
 {
-    if (!self.programStack || [self.programStack count] == 0) {
+    if (!self.programStack) {
         return 0;
     }
     
@@ -76,10 +76,10 @@
     }
     else if ([topOfStack isKindOfClass:[NSString class]]) { // operation
         NSString *operation = topOfStack;
-        if ([operation isEqualToString:@"*"]) {
+        if ([operation isEqualToString:@"×"]) {
             result = [self popOperandOffStack:stack] * [self popOperandOffStack:stack];
         }
-        else if ([operation isEqualToString:@"/"]) {
+        else if ([operation isEqualToString:@"÷"]) {
             double divisor = [self popOperandOffStack:stack];
             if (divisor) {
                 result = [self popOperandOffStack:stack] / divisor;
@@ -88,9 +88,21 @@
         else if ([operation isEqualToString:@"+"]) {
             result = [self popOperandOffStack:stack] + [self popOperandOffStack:stack];
         }
-        else if ([operation isEqualToString:@"-"]) {
+        else if ([operation isEqualToString:@"−"]) {
             double subtrahend = [self popOperandOffStack:stack];
             result = [self popOperandOffStack:stack] - subtrahend;
+        }
+        else if ([operation isEqualToString:@"sin"]) {
+            result = sin([self popOperandOffStack:stack]);
+        }
+        else if ([operation isEqualToString:@"cos"]) {
+            result = cos([self popOperandOffStack:stack]);
+        }
+        else if ([operation isEqualToString:@"√"]) { // sqrt
+            result = sqrt([self popOperandOffStack:stack]);
+        }
+        else if ([operation isEqualToString:@"π"]) { // pi
+            result = 3.14159;
         }
     }
     
