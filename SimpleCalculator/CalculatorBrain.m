@@ -77,10 +77,10 @@
     else if ([topOfStack isKindOfClass:[NSString class]]) { // operation
         NSString *operation = topOfStack;
         if ([operation isEqualToString:@"×"]) {
-            result = [self popOperandOffStack:stack] * [self popOperandOffStack:stack];
+            result = [self popThe:stack] * [self popThe:stack];
         }
         else if ([operation isEqualToString:@"÷"]) {
-            double divisor = [self popOperandOffStack:stack];
+            double divisor = [self popThe:stack];
             if (divisor) {
                 result = [self popThe:stack] / divisor;
             }
@@ -89,17 +89,17 @@
             result = [self popThe:stack] + [self popThe:stack];
         }
         else if ([operation isEqualToString:@"−"]) {
-            double subtrahend = [self popOperandOffStack:stack];
-            result = [self popOperandOffStack:stack] - subtrahend;
+            double subtrahend = [self popThe:stack];
+            result = [self popThe:stack] - subtrahend;
         }
         else if ([operation isEqualToString:@"sin"]) {
-            result = sin([self popOperandOffStack:stack]);
+            result = sin([self popThe:stack]);
         }
         else if ([operation isEqualToString:@"cos"]) {
-            result = cos([self popOperandOffStack:stack]);
+            result = cos([self popThe:stack]);
         }
         else if ([operation isEqualToString:@"√"]) { // sqrt
-            result = sqrt([self popOperandOffStack:stack]);
+            result = sqrt([self popThe:stack]);
         }
         else if ([operation isEqualToString:@"π"]) { // pi
             result = 3.14159;

@@ -82,11 +82,13 @@
     }
     double result = [self.calculatorBrain performOperation:sender.currentTitle];
     self.display.text = [NSString stringWithFormat:@"%g", result];
+    self.brainHistory.text = [self.brainHistory.text stringByAppendingString:[sender.currentTitle stringByAppendingString:@" "]];
 }
 
 - (IBAction)enterPressed
 {
     [self.calculatorBrain pushOperand:[self.display.text doubleValue]];
+    self.brainHistory.text = [self.brainHistory.text stringByAppendingString:[self.display.text stringByAppendingString:@" "]];
     self.userCurrentlyEnteringDigit = NO;
     self.userHasEnteredDecimalPoint = NO;
 }
@@ -97,5 +99,10 @@
     [self.calculatorBrain reset];
     self.userCurrentlyEnteringDigit = NO;
     self.userHasEnteredDecimalPoint = NO;
+}
+
+- (IBAction)clearBrainHistoryPressed
+{
+    self.brainHistory.text = @"";
 }
 @end

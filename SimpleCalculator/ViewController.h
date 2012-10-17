@@ -11,6 +11,7 @@
 @interface ViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UILabel *display;
+@property (nonatomic, weak) IBOutlet UILabel *brainHistory;
 
 - (IBAction)digitPressed:(UIButton *)sender;
 
@@ -19,5 +20,7 @@
 - (IBAction)enterPressed;
 
 - (IBAction)clearPressed;
+
+- (IBAction)clearBrainHistoryPressed;
 
 @end
