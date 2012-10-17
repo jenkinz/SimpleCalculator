@@ -64,7 +64,7 @@
     return @"Invalid program";
 }
 
-+ (double)popOperandOffStack:(NSMutableArray *)stack
++ (double)popThe:(NSMutableArray *)stack
 {
     double result = 0;
     
@@ -82,11 +82,11 @@
         else if ([operation isEqualToString:@"÷"]) {
             double divisor = [self popOperandOffStack:stack];
             if (divisor) {
-                result = [self popOperandOffStack:stack] / divisor;
+                result = [self popThe:stack] / divisor;
             }
         }
         else if ([operation isEqualToString:@"+"]) {
-            result = [self popOperandOffStack:stack] + [self popOperandOffStack:stack];
+            result = [self popThe:stack] + [self popThe:stack];
         }
         else if ([operation isEqualToString:@"−"]) {
             double subtrahend = [self popOperandOffStack:stack];
@@ -118,7 +118,7 @@
         stack = [program mutableCopy];
     }
     
-    return [self popOperandOffStack:stack];  
+    return [self popThe:stack];  
 }
 
 @end
